@@ -15,18 +15,28 @@ namespace OdeToFood.Web
 		private readonly IRestaurant _restaurant;
 
 		public S Message { get; set; }
+
 		public IEnumerable<Restaurants.Restaurant> Restaurants { get; set; }
 		public ListModel(IConfiguration configuration, IRestaurant restaurant)
 		{
 			_configuration = configuration;
 			_restaurant = restaurant;
 		}
-		public void OnGet()
+		public void OnGet(int id = -1)
 		{
 			Message = _configuration["Message"];
 
-			Restaurants = _restaurant.GetRestaurants();
-			
+			Restaurants = _restaurant.GetRestaurants().Where(x => x.Id == id);
+
+		}
+
+		public void OnPost()
+		{
+			var pms = Request.Form["id"];
+
+			var id = at.Int32.Of(pms[0]);
+
+			Restaurants = _restaurant.GetRestaurants().Where(x => x.Id == id);
 		}
 	}
 }
