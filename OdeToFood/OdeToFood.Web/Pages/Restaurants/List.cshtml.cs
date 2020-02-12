@@ -26,7 +26,10 @@ namespace OdeToFood.Web
 		{
 			Message = _configuration["Message"];
 
-			Restaurants = _restaurant.GetRestaurants().Where(x => x.Id == id);
+			var tmpResult = _restaurant.GetRestaurants();
+			if (id > 0)
+				tmpResult = tmpResult.Where(x => x.Id == id);
+			Restaurants = tmpResult;
 
 		}
 
